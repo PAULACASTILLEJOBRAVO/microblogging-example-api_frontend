@@ -41,8 +41,8 @@ export default function Signup(props) {
     }
 
     const checkPOSTNewUser = (res) => {
-
-        if(res.message === 'OK'){
+        
+        if(res.message === 'ok'){
 
             sessionStorage.setItem('username', username);
             sessionStorage.setItem('iduser', res.id);
