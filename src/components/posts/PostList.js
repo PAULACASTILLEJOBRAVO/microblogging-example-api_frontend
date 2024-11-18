@@ -4,7 +4,7 @@ import { FaFeather } from 'react-icons/fa';
 import { getAllPosts } from '../../utils/apicalls';
 import { getDateInStrFormat } from '../../utils/utils';
 
-function PostList (props){
+function PostList (){
     const [posts, setPosts] = useState([]);
 
     const getPost = () => {

@@ -15,7 +15,7 @@ function EditPost ({post, updateMyPost}){
         setDescription(event.target.value);
     }
 
-    const editPost = () => {
+    const editPost = (post) => {
         putExistingPost(post._id, title, description)
         .then(res => checkPUTPost(res));
     }
@@ -28,10 +28,10 @@ function EditPost ({post, updateMyPost}){
         }
     }
 
-    // useEffect(() => {
-    //     setTitle(post.title);
-    //     setDescription(post.description);
-    // }, [title, description, post]);
+    useEffect(() => {
+        setTitle(post.title);
+        setDescription(post.description);
+    }, [post]);
 
     return(
         <div>
@@ -46,7 +46,7 @@ function EditPost ({post, updateMyPost}){
                         <Label for="aDescripcion">Descripción</Label>
                         <Input style={{height: '200px'}} type="textarea" name="descripcion" id="aDescripcion" placeholder="Introduce una descripción" value={description} onChange={handleDescriptionChange}/>
                     </FormGroup>
-                    <Button onClick={editPost}>Actualizar</Button>
+                    <Button onClick={() => editPost(post)}>Actualizar</Button>
                 </Form>
             </Card>
         </div>

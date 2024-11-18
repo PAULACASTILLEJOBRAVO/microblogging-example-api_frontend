@@ -2,7 +2,7 @@ import React ,{useState} from "react";
 import { Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, Tooltip } from "reactstrap";
 import { FaSignOutAlt, FaCogs } from "react-icons/fa";
 
-export default function HeaderDashboard (props) {
+export default function HeaderDashboard ({onShow, onLogout}) {
     const [tooltipOpen, setTooltipOpen] = useState(false);
     
     return(
@@ -11,18 +11,18 @@ export default function HeaderDashboard (props) {
             <Collapse navbar>
                 <Nav className="ml-auto" navbar>
                     <NavItem>
-                        <NavLink href="#" onClick={props.onShow.bind(this, 1)}>Todos los Posts</NavLink>
+                        <NavLink href="#" onClick={onShow.bind(this, 1)}>Todos los Posts</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink href="#" onClick={props.onShow.bind(this, 2)}>Mis Posts</NavLink>
+                        <NavLink href="#" onClick={onShow.bind(this, 2)}>Mis Posts</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink href="#" onClick={props.onShow.bind(this, 3)}>
+                        <NavLink href="#" onClick={onShow.bind(this, 3)}>
                             {sessionStorage.getItem('username')}
                         </NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink href="#" id="tooltip_logout" onClick={props.onLogout}>
+                        <NavLink href="#" id="tooltip_logout" onClick={onLogout}>
                             <FaSignOutAlt/>
                             <Tooltip isOpen={tooltipOpen} placement="bottom" target="tooltip_logout" toggle={() => { setTooltipOpen(!tooltipOpen) }}>
                                 Salir
