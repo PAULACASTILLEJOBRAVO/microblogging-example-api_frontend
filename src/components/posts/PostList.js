@@ -18,38 +18,45 @@ function PostList (){
     }, []);
 
     return(
-        <div>
+        <div >
             <CardTitle tag="center"><Alert color='info'><strong>Posts publicados</strong><Badge pill>{posts.length}</Badge></Alert></CardTitle>
-            <Table>
-                <tbody>
-                    {posts.map((post, index) => {
-                        return(
-                            <div>
-                                <Alert color='dark'>
-                                    <Row>
-                                        <Col>
-                                            <CardTitle tag="h5"><FaFeather/>{post.title}</CardTitle>
-                                            <Card>
-                                                <CardBody>
-                                                    <Row>
-                                                        <Col>
-                                                            {post.description}
-                                                        </Col>
-                                                    </Row>
-                                                    <Row>
-                                                        <Col align="right">
-                                                            <small>{getDateInStrFormat(new Date(post.publicationdate))} - {post.user.username}</small>
-                                                        </Col>
-                                                    </Row>
-                                                </CardBody>
-                                            </Card>
-                                        </Col>
-                                    </Row>
-                                </Alert>
-                            </div>);
-                    })}
-                </tbody>
-            </Table>
+            <div style={{
+            overflowY: 'scroll',
+            width:'auto',
+            float: 'left',
+            height:'450px',
+            position:'relative'}}>
+                <Table>
+                    <tbody>
+                        {posts.map((post, index) => {
+                            return(
+                                <div>
+                                    <Alert color='dark'>
+                                        <Row>
+                                            <Col>
+                                                <CardTitle tag="h5"><FaFeather/>{post.title}</CardTitle>
+                                                <Card>
+                                                    <CardBody>
+                                                        <Row>
+                                                            <Col>
+                                                                {post.description}
+                                                            </Col>
+                                                        </Row>
+                                                        <Row>
+                                                            <Col align="right">
+                                                                <small>{getDateInStrFormat(new Date(post.publicationdate))} - {post.user.username}</small>
+                                                            </Col>
+                                                        </Row>
+                                                    </CardBody>
+                                                </Card>
+                                            </Col>
+                                        </Row>
+                                    </Alert>
+                                </div>);
+                        })}
+                    </tbody>
+                </Table>
+            </div>
         </div>
     );
 }

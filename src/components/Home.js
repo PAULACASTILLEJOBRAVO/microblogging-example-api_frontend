@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Container, Row, Col } from "reactstrap";
+import { useNavigate } from "react-router";
+
 import HeaderDashboard from "./HeaderDashboard.js";
 import MyPostList from "./posts/MyPostList";
 import PostList from "./posts/PostList";
-import { useNavigate } from "react-router";
+import Profile from "./users/Profile.js";
 
 function Home (){
     const [show, setShow] = useState(<PostList/>);
@@ -20,7 +22,7 @@ function Home (){
         }else if(option === 2){
             setShow(<MyPostList/>);
         }else if(option === 3){
-            alert('Usuario: '+sessionStorage.getItem('username')+'\nRol: '+sessionStorage.getItem('role'));
+            setShow(<Profile iduser={sessionStorage.getItem('iduser')}/>);
         }
     }
     
@@ -30,7 +32,7 @@ function Home (){
         return(
             <Container>
                 <Row>
-                    <Col><HeaderDashboard onLogout={handleLogout} onShow={handleOnShow}/></Col>
+                    <Col xs="12"><HeaderDashboard onLogout={handleLogout} onShow={handleOnShow}/></Col>
                 </Row>
                 <Row>
                     <Col xs="12">

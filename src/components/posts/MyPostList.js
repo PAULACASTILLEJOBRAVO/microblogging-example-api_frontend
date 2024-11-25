@@ -61,7 +61,6 @@ function MyPostList (){
     const checkDELETEPost = res => {
         if(res === "OK"){
             setShowDeleteModal(null);
-            setEdit(<Alert color='warning'>Seleccione editar un post de la lista</Alert>);
             handleUpdateMyPosts();
         }else{
             console.error("ERROR");

@@ -9,6 +9,8 @@ export {
     putExistingPost,
     postNewPost,
     getAllUsers, 
+    getOneUser,
+    putExistingUser
 };
 
 function login(username, password){
@@ -62,4 +64,15 @@ function postNewPost(iduser, title, description, email){
 
 function getAllUsers() {
     return API.get('/users').then(res => res.data);
+}
+
+function getOneUser(iduser) {
+    return API.get('/users/'+iduser).then(res => res.data);
+}
+
+function putExistingUser(iduser, fullname, email){
+    return API.put('/users/'+iduser, {
+        fullname: fullname, 
+        email: email
+    }).then(res => res.data);
 }

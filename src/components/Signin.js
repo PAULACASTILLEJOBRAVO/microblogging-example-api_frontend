@@ -42,10 +42,10 @@ function Signin(){
     return(
         <Container>
             <Row>
-                <Col xs="9">
+                <Col md="9" sm="6" xs="12" >
                     <PostList/>
                 </Col>
-                <Col xs="3">
+                <Col md="3" sm="6" xs="12">
                     <Card body>
                     <CardTitle tag="h4">Login</CardTitle>
                     {loginMessage}

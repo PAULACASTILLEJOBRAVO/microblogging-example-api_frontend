@@ -1,14 +1,18 @@
 import React ,{useState} from "react";
-import { Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, Tooltip } from "reactstrap";
+import { Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, NavbarToggler, Tooltip } from "reactstrap";
 import { FaSignOutAlt, FaCogs } from "react-icons/fa";
 
 export default function HeaderDashboard ({onShow, onLogout}) {
     const [tooltipOpen, setTooltipOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggle = () => setIsOpen(!isOpen);
     
     return(
-        <Navbar color="warning" light expand="md">
+        <Navbar color="warning" light expand="sm">
             <NavbarBrand><FaCogs/>Dashboard</NavbarBrand>
-            <Collapse navbar>
+            <NavbarToggler onClick={toggle} />
+            <Collapse navbar isOpen={isOpen} >
                 <Nav className="ml-auto" navbar>
                     <NavItem>
                         <NavLink href="#" onClick={onShow.bind(this, 1)}>Todos los Posts</NavLink>

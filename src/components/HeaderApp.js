@@ -5,7 +5,7 @@ export default function HeaderApp() {
     return(
         <Container>
             <Row>
-                <Col>
+                <Col  md="12" sm="12" xs="12">
                     <Navbar color="dark" light expand="md">
                         <NavbarBrand>
                             <h4 className="text-warning">
