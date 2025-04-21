@@ -15,8 +15,8 @@ function MyPostList (){
   
     
     const getPost = () => {
-        getMyPost(sessionStorage.getItem('iduser')).then(posts => {
-            setPost(posts);
+        getMyPost(sessionStorage.getItem('iduser')).then(data => {
+            setPost(data.posts);
         });
     }
 

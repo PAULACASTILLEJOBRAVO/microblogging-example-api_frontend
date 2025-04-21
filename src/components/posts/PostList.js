@@ -8,8 +8,9 @@ function PostList (){
     const [posts, setPosts] = useState([]);
 
     const getPost = () => {
-        getAllPosts().then(posts => {
-            setPosts(posts);
+        getAllPosts().then(data => {
+            console.log(data);
+            setPosts(data.posts);
         });
     }
 

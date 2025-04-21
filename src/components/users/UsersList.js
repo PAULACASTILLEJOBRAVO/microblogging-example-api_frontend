@@ -6,8 +6,8 @@ function UserList () {
     const [users, setUsers] = useState([]);
 
     const getUser = () => {
-        getAllUsers().then(users => {    
-            setUsers(users);
+        getAllUsers().then(data => {    
+            setUsers(data.users);
         });
     }
 

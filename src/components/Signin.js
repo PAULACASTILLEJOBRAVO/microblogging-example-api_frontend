@@ -22,33 +22,33 @@ function Signin(){
 
     const onSignin = event => {
         login(username, password)
-        .then(res => checkLogin(res))
-        .catch(err => console.error(err));
+        .then(data => checkLogin(data))
+        .catch(error => setLoginMessage(<Alert color="danger">{error.message}</Alert>));
     }
 
-    const checkLogin = (res) => { 
+    const checkLogin = (data) => { 
         
-        if(res.message === 'ok'){
-            sessionStorage.setItem('role', res.role);
-            sessionStorage.setItem('iduser', res.id);
-            sessionStorage.setItem('email', res.email);
+        if(data.message === 'ok'){
+            sessionStorage.setItem('role', data.role);
+            sessionStorage.setItem('iduser', data.id);
+            sessionStorage.setItem('email', data.email);
+            sessionStorage.setItem('token', data.token);
             sessionStorage.setItem('username', username);
             navigate("/home");
         }else{
-            setLoginMessage(<Alert color="danger">{res.message}</Alert>);
+            setLoginMessage(<Alert color="danger">{data.message}</Alert>);
         }
     }
 
     return(
         <Container>
             <Row>
-                <Col md="9" sm="6" xs="12" >
+                <Col md="8" sm="6" xs="12" >
                     <PostList/>
                 </Col>
-                <Col md="3" sm="6" xs="12">
+                <Col md="4" sm="6" xs="12">
                     <Card body>
                     <CardTitle tag="h4">Login</CardTitle>
-                    {loginMessage}
                     <Form>
                         <FormGroup>
                             <Label for="aUsername">Username</Label>
@@ -56,9 +56,10 @@ function Signin(){
                         </FormGroup>
                         <FormGroup>
                         <Label for="aPassword">Password</Label>
-                            <Input type="text" name="password" id="aPassword" placeholder="Introduce tu contraseña:" onChange={handlePasswordChange} required/>
+                            <Input type="password" name="password" id="aPassword" placeholder="Introduce tu contraseña:" onChange={handlePasswordChange} required/>
                         </FormGroup>
                         <Button onClick={onSignin}>Entrar</Button>
+                        {loginMessage}
                     </Form> 
                     </Card>
                     <Row>

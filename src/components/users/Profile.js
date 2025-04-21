@@ -9,9 +9,8 @@ function Profile({iduser}){
     const [edit, setEdit] = useState(null);
 
     const getUser = (iduser) => {
-        getOneUser(iduser).then(user => {
-            setUser(user);
-            setEdit(null);
+        getOneUser(iduser).then(data => {
+            setUser(data.user);
         });
     }
 
