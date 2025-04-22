@@ -19,12 +19,14 @@ function login(username, password){
         username: username,
         password:password
     }).then(result => result.data)
-    .catch(error => console.log(error));
+    .catch(error => error);
 }
 
 //USERS
 function getAllUsers() {
-    return API.get('/users/all').then(res => res.data);
+    return API.get('/users/all')
+    .then(res => res.data)
+    .catch(error => error);
 }
 
 function getOneUser(iduser) {
@@ -34,10 +36,12 @@ function getOneUser(iduser) {
       headers: {
         Authorization: `Bearer ${token}`
       }
-    }).then(res => res.data);
+    })
+    .then(res => res.data)
+    .catch(error => error);
 }
 
-function postNewUser(username, password, fullname, email, role){    
+function postNewUser(username, password, fullname='', email, role){    
     return API.post('/users', {
         username: username,
         password: password,
@@ -46,7 +50,7 @@ function postNewUser(username, password, fullname, email, role){
         role: role
     })
     .then(result => result.data)
-    .catch(err => console.log(err));
+    .catch(error => error);
 }
 
 function putExistingUser(iduser, fullname, email, aboutMe){
@@ -59,16 +63,22 @@ function putExistingUser(iduser, fullname, email, aboutMe){
                 Authorization: `Bearer ${token}`
             }
         }
-    ).then(res => res.data);
+    )
+    .then(res => res.data)
+    .catch(error => error);
 }
 
 //POSTS
 function getAllPosts() {
-    return API.get('/posts/all').then(res => res.data);
+    return API.get('/posts/all')
+    .then(res => res.data)
+    .catch(error => error);
 }
 
 function getMyPost(idpost){
-    return API.get(`/posts/${idpost}`).then(res => res.data);
+    return API.get(`/posts/${idpost}`)
+    .then(res => res.data)
+    .catch(error => error);
 }
 
 function postNewPost(iduser, title, description, email){
@@ -78,16 +88,20 @@ function postNewPost(iduser, title, description, email){
         description: description, 
         email: email
     }).then(res => res.data)
-    .catch(err => console.log(err));
+    .catch(error => error);
 }
 
 function putExistingPost(idpost, title, description){
     return API.put(`/posts/${idpost}`, {
         title: title, 
         description: description
-    }).then(res => res.data);
+    })
+    .then(res => res.data)
+    .catch(error => error);
 }
 
 function deletePost(idpost){
-    return API.delete(`/posts/${idpost}`).then(res => res.data);
+    return API.delete(`/posts/${idpost}`)
+    .then(res => res.data)
+    .catch(error => error);
 }

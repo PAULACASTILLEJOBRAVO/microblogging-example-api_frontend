@@ -1,16 +1,22 @@
 import React, { useState } from "react";
 import { Button, Form, FormGroup, Label, Input, Container, Row, Col, Card, CardTitle, Alert } from 'reactstrap';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { postNewUser } from '../utils/apicalls.js';
 
-export default function Signup(props) {
+export default function Signup() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [fullname, setFullname] = useState('');
     const [email, setEmail] = useState('');
-    const [role, setRole] = useState('subscriber');
+    const [role, setRole] = useState('suscriptor');
 
-    const [loginMessage, setLoginMessage] = useState('');
+    const [signupMessage, setSignupMessage] = useState('');
+    const [messageColor, setMessageColor] = useState('danger');
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    const [showPassword, setShowPassword] = useState(false);
 
     const navigate = useNavigate();
 
@@ -34,24 +40,64 @@ export default function Signup(props) {
         setRole(event.target.value);
     }
 
-    const onSignup = () => {
-        postNewUser(username, password, fullname, email, role)
-        .then(res => checkPOSTNewUser(res))
-        .catch(err => checkPOSTNewUser(err));
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
     }
 
-    const checkPOSTNewUser = (res) => {
+    const onSignup = () => {
+        if (!username && !password && !email) {
+            setSignupMessage("Completa todos los campos");
+            setMessageColor("danger");
+            return;
+        }
+
+        if(!username){
+            setSignupMessage("Completa el campo username");
+            setMessageColor("danger");
+            return;
+        } 
         
-        if(res.message === 'ok'){
+        if(!password){
+            setSignupMessage("Completa el campo password");
+            setMessageColor("danger");
+            return;
+        }
+
+        if(!email){
+            setSignupMessage("Completa el campo username");
+            setMessageColor("danger");
+            return;
+        } 
+
+        if (!emailRegex.test(email)) {
+            setSignupMessage("Introduce un email válido");
+            setMessageColor("danger");
+            return;
+        }
+
+        postNewUser(username, password, fullname, email, role)
+        .then(data => checkPOSTNewUser(data))
+        .catch(error => checkPOSTNewUser(error));
+    }
+
+    const checkPOSTNewUser = (data) => {
+        
+        if(data.message === 'Usuario creado correctamente'){
 
             sessionStorage.setItem('username', username);
-            sessionStorage.setItem('iduser', res.id);
-            sessionStorage.setItem('role', role);
-            sessionStorage.setItem('email', email);
+            sessionStorage.setItem('iduser', data.id);
             
-            navigate("/home");
+            navigate("/");
         }else{
-            setLoginMessage(<Alert color="danger">¡Error!</Alert>);
+            if (data.response) {
+                const errorMessage = data.response.data.message || "Ha ocurrido un error desconocido. Inténtalo nuevamente.";
+                const detailedError = data.response.data.error || "";
+                setSignupMessage(errorMessage, detailedError);
+                setMessageColor("danger");
+            } else {
+                setSignupMessage("¡Error en la solicitud, intenta más tarde!");
+                setMessageColor("danger");
+            }
         }
 
     }
@@ -69,7 +115,12 @@ export default function Signup(props) {
                             </FormGroup>
                             <FormGroup>
                                 <Label for="aPassword">Password</Label>
-                                <Input type="password" name="password" id="aPassword" placeholder="Introduce tu password" onChange={handlePasswordChange} required/>
+                                <div className="d-flex align-items-center position-relative">
+                                    <Input type={showPassword ? "text" : "password"} name="password" id="aPassword" placeholder="Introduce tu password" onChange={handlePasswordChange} required style={{ marginRight: "0-5rem" }}/>    
+                                    <button type="button" onClick={togglePasswordVisibility} style={{ position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", padding: "4px", marginLeft: "5px" }}>                       
+                                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                    </button>    
+                                </div>
                             </FormGroup>
                             <FormGroup>
                                 <Label for="aFullname">Fullname</Label>
@@ -82,11 +133,11 @@ export default function Signup(props) {
                             <FormGroup>
                                 <Label for="aRole">Role</Label>
                                 <Input type="select" name="role" id="aRole" value={role} onChange={handleRoleChange} >
-                                    <option value="subscriber">Subscriptor</option>
-                                    <option value="admin">Administrador</option>
+                                    <option value="subscriber">Suscriptor</option>
+                                    <option value="publisher">Publicador</option>
                                 </Input> 
                             </FormGroup>
-                            {loginMessage}
+                            {signupMessage && <Alert color={messageColor}>{signupMessage}</Alert>}
                             <Button onClick={onSignup}>Registro</Button>
                         </Form>
                     </Card>
