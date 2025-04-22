@@ -10,7 +10,7 @@ function Profile({iduser}){
 
     const getUser = (iduser) => {
         getOneUser(iduser).then(data => {
-            setUser(data.user);
+            setUser(data.users);
         });
     }
 
@@ -29,16 +29,17 @@ function Profile({iduser}){
     return(
         <div>
             {edit}
-            <CardTitle tag="center"><Alert color='info'><strong>Perfil de {user.username}</strong></Alert></CardTitle>
+            <CardTitle tag="center"><Alert color='info'><strong>Perfil de  {user.username}</strong></Alert></CardTitle>
             <Row>
                 <Col>
                 </Col>
                 <Col>
                     <Card style={{ width: '20rem', height: 'auto'}}>
                         <CardBody>
-                            <CardText>Nombre de usuario: {user.username}</CardText>
-                            <CardText>Nombre completo: {user.fullname}</CardText>
-                            <CardText>Email: {user.email}</CardText>
+                            <CardText>Nombre de usuario:  {user.username}</CardText>
+                            <CardText>Nombre completo:  {user.fullname}</CardText>
+                            <CardText>Email:  {user.email}</CardText>
+                            { user.aboutMe ? <CardText>Sobre mí:  {user.aboutMe}</CardText> : "" }
                             <Button color='warning' onClick={() => handleShowEdit(user)}>Editar</Button>
                         </CardBody>
                     </Card>

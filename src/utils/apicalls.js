@@ -15,7 +15,7 @@ export {
 
 //LOGIN
 function login(username, password){
-    return API.post('/users/signin', {
+    return API.post('/users/login', {
         username: username,
         password:password
     }).then(result => result.data)
@@ -28,22 +28,17 @@ function getAllUsers() {
 }
 
 function getOneUser(iduser) {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem('token');
 
-    return API.get('/users/secure/'+iduser, {
+    return API.get(`/users/secure/${iduser}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     }).then(res => res.data);
 }
 
-function postNewUser(username, password, fullname, email, role){
-    const token = localStorage.getItem("token");
-    
-    return API.post('/users/secure', {
-        headers: {
-            Authorization: `Bearer ${token}`  
-        },
+function postNewUser(username, password, fullname, email, role){    
+    return API.post('/users', {
         username: username,
         password: password,
         fullname: fullname,
@@ -54,16 +49,17 @@ function postNewUser(username, password, fullname, email, role){
     .catch(err => console.log(err));
 }
 
-function putExistingUser(iduser, fullname, email){
+function putExistingUser(iduser, fullname, email, aboutMe){
     const token = sessionStorage.getItem("token");
 
-    return API.put('/users/secure/'+iduser, {
-        headers: {
-            Authorization: `Bearer ${token}`
-        },
-        fullname: fullname, 
-        email: email
-    }).then(res => res.data);
+    return API.put(`/users/secure/${iduser}`, 
+        {fullname, email,aboutMe}, 
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    ).then(res => res.data);
 }
 
 //POSTS
@@ -71,8 +67,8 @@ function getAllPosts() {
     return API.get('/posts/all').then(res => res.data);
 }
 
-function getMyPost(iduser){
-    return API.get('/posts/'+iduser).then(res => res.data);
+function getMyPost(idpost){
+    return API.get(`/posts/${idpost}`).then(res => res.data);
 }
 
 function postNewPost(iduser, title, description, email){
@@ -86,12 +82,12 @@ function postNewPost(iduser, title, description, email){
 }
 
 function putExistingPost(idpost, title, description){
-    return API.put('/posts/'+idpost, {
+    return API.put(`/posts/${idpost}`, {
         title: title, 
         description: description
     }).then(res => res.data);
 }
 
 function deletePost(idpost){
-    return API.delete('/posts/'+idpost).then(res => res.data);
+    return API.delete(`/posts/${idpost}`).then(res => res.data);
 }
