@@ -1,10 +1,13 @@
 import React, {useState} from 'react';
-import { Card, CardTitle, Label, Button, Form, FormGroup, Input } from 'reactstrap';
+import { Card, CardTitle, Label, Button, Form, FormGroup, Input, Alert } from 'reactstrap';
 import { postNewPost } from '../../utils/apicalls';
 
 export default function AddPost ({updateMyPost}){
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+
+    const [signupMessage, setSignupMessage] = useState('');
+    const [messageColor, setMessageColor] = useState('danger');
 
     const handleTitleChange = event => {
         setTitle(event.target.value);
@@ -15,16 +18,25 @@ export default function AddPost ({updateMyPost}){
     }
     
     const addPost = () => {
-        postNewPost(sessionStorage.getItem('iduser'), title, description, sessionStorage.getItem('email'))
-        .then(res => checkPOSTNewPost(res));
+        postNewPost(title, description)
+        .then(result => checkPOSTNewPost(result))
+        .catch(error => checkPOSTNewPost(error));
     }
 
-    const checkPOSTNewPost = res => {
+    const checkPOSTNewPost = data => {
 
-        if(res === "OK"){
+        if(data.message === 'Blog creado correctamente'){
             updateMyPost();
         }else{
-            console.error("ERROR");
+            if (data.response) {
+                const errorMessage = data.response.data.message || "Ha ocurrido un error desconocido. Inténtalo nuevamente.";
+                const detailedError = data.response.data.error || "";
+                setSignupMessage(errorMessage, detailedError);
+                setMessageColor("danger");
+            } else {
+                setSignupMessage("¡Error en la solicitud, intenta más tarde!");
+                setMessageColor("danger");
+            }
         }
     }
 
@@ -41,6 +53,7 @@ export default function AddPost ({updateMyPost}){
                         <Label for="aDescripcion">Descripción</Label>
                         <Input style={{height: '200px'}} type="textarea" name="descripcion" id="aDescripcion" placeholder="Introduce una descripción" value={description} onChange={handleDescriptionChange}/>
                     </FormGroup>
+                    {signupMessage && <Alert color={messageColor}>{signupMessage}</Alert>}
                     <Button onClick={addPost}>Añadir</Button>
                 </Form>
             </Card>

@@ -58,7 +58,7 @@ function Signin(){
         if(data.message === 'Login completado'){
             sessionStorage.setItem('iduser', data.id);
             sessionStorage.setItem('token', data.token);
-            sessionStorage.setItem('username', username);
+            sessionStorage.setItem('username', data.username);
 
             navigate("/home");
         }else{

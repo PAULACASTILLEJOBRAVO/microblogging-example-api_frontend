@@ -24,12 +24,12 @@ function EditPost ({user, updateProfile, setEdit}){
 
     const editUser = (user) => {
         putExistingUser(user._id, fullname, email, aboutMe)
-        .then(res => checkPUTUser(res))
-        .catch(error => console.error("ERROR", error.message));
+        .then(result => checkPUTUser(result))
+        .catch(error => checkPUTUser(error));
     }
 
-    const checkPUTUser = res => {
-        if(res.message === "Usuario modificado correctamente"){
+    const checkPUTUser = data => {
+        if(data.message === "Usuario modificado correctamente"){
             setUpdateProfileMessage("Perfil actualizado con éxito");
             setTimeout(() => {
                 updateProfile(user._id); 

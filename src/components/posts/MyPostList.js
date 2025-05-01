@@ -11,8 +11,10 @@ function MyPostList (){
     const [post, setPost] = useState([]);
     const [edit, setEdit] = useState(<Alert color='warning'>Seleccione editar un post de la lista</Alert>);
     const [activeTab, setActiveTab] = useState('1');
-    const [showDeleteModal, setShowDeleteModal] = useState(null);
-  
+    const [showDeleteModal, setShowDeleteModal] = useState(null);  
+
+    const [signupMessage, setSignupMessage] = useState('');
+    const [messageColor, setMessageColor] = useState('danger');
     
     const getPost = () => {
         getMyPost(sessionStorage.getItem('iduser')).then(data => {
@@ -46,8 +48,9 @@ function MyPostList (){
                 <ModalBody>
                     ¿Estás seguro de desear eliminar el post <strong>{post.title}</strong>?
                 </ModalBody>
+                {signupMessage && <Alert color={messageColor}>{signupMessage}</Alert>}
                 <ModalFooter>
-                    <Button color='warning' onClick={() => deletePosts(post)}>Eliminar</Button>
+                    <Button color='danger' onClick={() => deletePosts(post)}>Eliminar</Button>
                     <Button color='secondary' onClick={() => setShowDeleteModal(null)}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
@@ -55,15 +58,30 @@ function MyPostList (){
     }
 
     const deletePosts = post => {
-        deletePost(post._id).then(res => checkDELETEPost(res));
+        deletePost(post._id)
+        .then(result => checkDELETEPost(result))
+        .catch(error => checkDELETEPost(error));
     }
 
-    const checkDELETEPost = res => {
-        if(res === "OK"){
-            setShowDeleteModal(null);
-            handleUpdateMyPosts();
+    const checkDELETEPost = data => {
+        if(data.message === "Blog eliminado correctamente"){
+            setSignupMessage(data.message);
+            setMessageColor("success");
+
+            setTimeout(() => {
+                setShowDeleteModal(null);
+                handleUpdateMyPosts();
+            }, 1500);
         }else{
-            console.error("ERROR");
+            if (data.response) {
+                const errorMessage = data.response.data.message || "Ha ocurrido un error desconocido. Inténtalo nuevamente.";
+                const detailedError = data.response.data.error || "";
+                setSignupMessage(errorMessage, detailedError);
+                setMessageColor("danger");
+            } else {
+                setSignupMessage("¡Error en la solicitud, intenta más tarde!");
+                setMessageColor("danger");
+            }
         }
     }
 

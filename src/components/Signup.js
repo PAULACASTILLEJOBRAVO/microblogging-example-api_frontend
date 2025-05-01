@@ -84,7 +84,7 @@ export default function Signup() {
         
         if(data.message === 'Usuario creado correctamente'){
 
-            sessionStorage.setItem('username', username);
+            sessionStorage.setItem('username', data.username);
             sessionStorage.setItem('iduser', data.id);
             
             navigate("/");
@@ -150,8 +150,4 @@ export default function Signup() {
             </Row>
         </Container>
     );
-    
-
-
-
 }

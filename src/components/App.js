@@ -5,8 +5,6 @@ import Home from './Home.js';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
-
-
 function App() {
   return (
     <Router>
@@ -22,7 +20,3 @@ function App() {
 }
 
 export default App;
-
-                // {/* <Route exact path='/' Component={Signin}/> */}
-                // <Route path='/signup' element={Signup}/>
-                // {/* <Route path='/home' Component={Home}/> */}

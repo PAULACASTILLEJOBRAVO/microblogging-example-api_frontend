@@ -17,11 +17,11 @@ function EditPost ({post, updateMyPost}){
 
     const editPost = (post) => {
         putExistingPost(post._id, title, description)
-        .then(res => checkPUTPost(res));
+        .then(result => checkPUTPost(result));
     }
 
-    const checkPUTPost = res => {
-        if(res === "OK"){
+    const checkPUTPost = data => {
+        if(data === "Blog modificado correctamente"){
             updateMyPost();
         }else{
             console.error("ERROR");

@@ -25,7 +25,7 @@ function login(username, password){
 //USERS
 function getAllUsers() {
     return API.get('/users/all')
-    .then(res => res.data)
+    .then(result => result.data)
     .catch(error => error);
 }
 
@@ -37,7 +37,7 @@ function getOneUser(iduser) {
         Authorization: `Bearer ${token}`
       }
     })
-    .then(res => res.data)
+    .then(result => result.data)
     .catch(error => error);
 }
 
@@ -64,44 +64,68 @@ function putExistingUser(iduser, fullname, email, aboutMe){
             }
         }
     )
-    .then(res => res.data)
+    .then(result => result.data)
     .catch(error => error);
 }
 
 //POSTS
 function getAllPosts() {
     return API.get('/posts/all')
-    .then(res => res.data)
+    .then(result=> result.data)
     .catch(error => error);
 }
 
 function getMyPost(idpost){
-    return API.get(`/posts/${idpost}`)
-    .then(res => res.data)
+    const token = sessionStorage.getItem('token');
+
+    return API.get(`/posts/secure/${idpost}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+    })
+    .then(result=> result.data)
     .catch(error => error);
 }
 
-function postNewPost(iduser, title, description, email){
-    return API.post('/posts', {
-        user: iduser,
+function postNewPost(title, description){
+    const token = sessionStorage.getItem('token');
+
+    return API.post('/posts/secure', {
         title: title, 
-        description: description, 
-        email: email
-    }).then(res => res.data)
+        description: description
+    },
+    {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+    }).then(result=> result.data)
     .catch(error => error);
 }
 
 function putExistingPost(idpost, title, description){
-    return API.put(`/posts/${idpost}`, {
+    const token = sessionStorage.getItem('token');
+
+    return API.put(`/posts/secure/${idpost}`, {
         title: title, 
         description: description
+    },
+    {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
     })
-    .then(res => res.data)
+    .then(result=> result.data)
     .catch(error => error);
 }
 
 function deletePost(idpost){
-    return API.delete(`/posts/${idpost}`)
-    .then(res => res.data)
+    const token = sessionStorage.getItem('token');
+
+    return API.delete(`/posts/secure/${idpost}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+    })
+    .then(result=> result.data)
     .catch(error => error);
 }
