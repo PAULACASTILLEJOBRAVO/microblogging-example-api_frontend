@@ -17,8 +17,16 @@ function MyPostList (){
     const [messageColor, setMessageColor] = useState('danger');
     
     const getPost = () => {
-        getMyPost(sessionStorage.getItem('iduser')).then(data => {
-            setPost(data.posts);
+        getMyPost(sessionStorage.getItem('iduser'))
+        .then(data => {
+            if (data && data.posts) {
+                setPost(data.posts);
+            } else {
+                setPost([]); // evita error en renderizado
+            }
+        })
+        .catch(() => {
+          setPost([]); // si hay error, tratamos como sin posts
         });
     }
 
@@ -91,48 +99,54 @@ function MyPostList (){
             <Row>
                 <Col>
                     <CardTitle tag="center"><Alert color='info'><strong>Mis Posts publicados</strong><Badge pill>{post.length}</Badge></Alert></CardTitle>
-                    <Table>
-                        <tbody>
-                            {post.map((posts, index) => {
-                                return(
-                                    <div>
-                                        <Row>
-                                            <Col>
-                                                <Navbar expand="md">
-                                                    <NavbarBrand href='#' id={"toggler"+index}>
-                                                        <h5>
-                                                            <FaFeatherAlt/>
-                                                            {posts.title}
-                                                        </h5>
-                                                    </NavbarBrand>
-                                                    <Nav className='ml-auto' navbar>
-                                                        <NavItem>
-                                                            <NavLink>
-                                                                <Button outline onClick={() => handleShowEdit(posts)}><FaEdit/></Button>
-                                                                <Button outline onClick={() => askForDelete(posts)}><FaTrashAlt/></Button>  
-                                                            </NavLink>
-                                                        </NavItem>
-                                                    </Nav>
-                                                </Navbar>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col>
-                                                <UncontrolledCollapse toggler={"#toggler"+index}>
-                                                    <Card>
-                                                        <CardBody>
-                                                            <Row><Col>{posts.description}</Col></Row>
-                                                            <Row><Col align="right"><small>{() => getDateInStrFormat(new Date(posts.publicationdate))}</small></Col></Row>
-                                                        </CardBody>
-                                                    </Card>
-                                                </UncontrolledCollapse>
-                                            </Col>
-                                        </Row>
-                                    </div>
-                                );
-                            })}
-                        </tbody>
-                    </Table>
+                    
+                    {post.length === 0 ? (
+                        <Alert color="secondary">Aún no has creado ningún post.</Alert>
+                        ) : (
+                            <Table>
+                                <tbody>
+                                    {post.map((posts, index) => {
+                                        return(
+                                            <div>
+                                                <Row>
+                                                    <Col>
+                                                        <Navbar expand="md">
+                                                            <NavbarBrand href='#' id={"toggler"+index}>
+                                                                <h5>
+                                                                    <FaFeatherAlt/>
+                                                                    {posts.title}
+                                                                </h5>
+                                                            </NavbarBrand>
+                                                            <Nav className='ml-auto' navbar>
+                                                                <NavItem>
+                                                                    <NavLink>
+                                                                        <Button outline onClick={() => handleShowEdit(posts)}><FaEdit/></Button>
+                                                                        <Button outline onClick={() => askForDelete(posts)}><FaTrashAlt/></Button>  
+                                                                    </NavLink>
+                                                                </NavItem>
+                                                            </Nav>
+                                                        </Navbar>
+                                                    </Col>
+                                                </Row>
+                                                <Row>
+                                                    <Col>
+                                                        <UncontrolledCollapse toggler={"#toggler"+index}>
+                                                            <Card>
+                                                                <CardBody>
+                                                                    <Row><Col>{posts.description}</Col></Row>
+                                                                    <Row><Col align="right"><small>{() => getDateInStrFormat(new Date(posts.publicationdate))}</small></Col></Row>
+                                                                </CardBody>
+                                                            </Card>
+                                                        </UncontrolledCollapse>
+                                                    </Col>
+                                                </Row>
+                                            </div>
+                                        );
+                                    })}
+                                </tbody>
+                            </Table>
+                        )
+                    }
                 </Col>
                 <Col XS="5">
                     <Nav tabs>
